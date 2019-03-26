@@ -1,22 +1,33 @@
 package pl.edu.wszib.springfirststeps;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.CommandLineRunner;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 public class SpringFirstStepsRunner implements CommandLineRunner {
 
     private FileJsonReader fileJsonReader;
+    private ObjectMapper objectMapper;
 
-    public SpringFirstStepsRunner(FileJsonReader fileJsonReader) {
+    public SpringFirstStepsRunner(FileJsonReader fileJsonReader, ObjectMapper objectMapper) {
         this.fileJsonReader = fileJsonReader;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public void run(String... args) {
         String json = fileJsonReader.readJson("order.txt");
-//        objectMapper.readValue(json, Or)
-        Order.Position position1 = new Order.Position(1000L, 1000L, "Test1");
-        Order.Position position2 = new Order.Position(2000L, 1000L, "Test2");
-        Order order = new Order(position1, position2);
-        System.out.println("Order: " + order);
+        Order order = tryReadValue(json);
+        System.out.println(order);
+    }
+
+    private Order tryReadValue(String json) {
+        try {
+            return objectMapper.readValue(json, Order.class);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

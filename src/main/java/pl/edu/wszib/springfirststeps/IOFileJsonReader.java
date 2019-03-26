@@ -1,7 +1,13 @@
 package pl.edu.wszib.springfirststeps;
 
-import java.io.*;
+import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
+@Component
 public class IOFileJsonReader implements FileJsonReader {
 
     @Override

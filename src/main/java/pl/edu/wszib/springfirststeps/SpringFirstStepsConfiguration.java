@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 public class SpringFirstStepsConfiguration {
 
     @Bean
-    public SpringFirstStepsRunner springFirstStepsRunner() {
-        IOFileJsonReader ioFileJsonReader = new IOFileJsonReader();
-        return new SpringFirstStepsRunner(ioFileJsonReader);
+    public SpringFirstStepsRunner springFirstStepsRunner(ObjectMapper objectMapper) {
+        FileJsonReader fileJsonReader = new NIOFileJsonReader();
+        return new SpringFirstStepsRunner(fileJsonReader, objectMapper);
     }
 
 }
