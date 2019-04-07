@@ -8,19 +8,25 @@ import java.io.UncheckedIOException;
 
 public class SpringFirstStepsRunner implements CommandLineRunner {
 
-    private FileJsonReader fileJsonReader;
-    private ObjectMapper objectMapper;
+    private final FileJsonReader fileJsonReader;
+    private final ObjectMapper objectMapper;
+    private final OrderService orderService;
 
-    public SpringFirstStepsRunner(FileJsonReader fileJsonReader, ObjectMapper objectMapper) {
+    public SpringFirstStepsRunner(FileJsonReader fileJsonReader,
+                                  ObjectMapper objectMapper,
+                                  OrderService orderService) {
         this.fileJsonReader = fileJsonReader;
         this.objectMapper = objectMapper;
+        this.orderService = orderService;
     }
 
     @Override
     public void run(String... args) {
         String json = fileJsonReader.readJson("order.txt");
         Order order = tryReadValue(json);
-        System.out.println(order);
+        Long orderId = orderService.create(order);
+        Order loadedOrder = orderService.findById(orderId);
+        System.out.println(loadedOrder);
     }
 
     private Order tryReadValue(String json) {

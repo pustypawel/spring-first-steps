@@ -3,28 +3,43 @@ package pl.edu.wszib.springfirststeps;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.*;
 
+@Entity
+@Table(name = "ORDER_TABLE")
 public class Order {
 
-    private final Long amount;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final List<Position> positions;
+    @Column(nullable = false)
+    private Long amount;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order", orphanRemoval = true)
+    private Set<Position> positions = new HashSet<>();
+
+    protected Order() {
+        // for hibernate
+    }
 
     @JsonCreator
     public Order(@JsonProperty("amount") Long amount, @JsonProperty("positions") Position[] positions) {
         this.amount = amount;
-        this.positions = Arrays.asList(positions);
+        this.positions.addAll(Arrays.asList(positions));
+        this.positions.forEach(position -> position.setOrder(this));
     }
 
     public Order(Position ... positions) {
         Objects.requireNonNull(positions);
-        this.positions = new ArrayList<>();
         this.positions.addAll(Arrays.asList(positions));
+        this.positions.forEach(position -> position.setOrder(this));
         this.amount = calculateAmount();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     private Long calculateAmount() {
@@ -41,10 +56,28 @@ public class Order {
                 '}';
     }
 
+    @Entity
     public static class Position {
-        private final Long price;
-        private final Long quantity;
-        private final String name;
+
+        @OneToOne(optional = false)
+        private Order order;
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        @Column(nullable = false)
+        private Long price;
+
+        @Column(nullable = false)
+        private Long quantity;
+
+        @Column(nullable = false)
+        private String name;
+
+        protected Position() {
+            // for hibernate
+        }
 
         @JsonCreator
         public Position(@JsonProperty("price") Long price, @JsonProperty("quantity") Long quantity, @JsonProperty("name") String name) {
@@ -64,6 +97,10 @@ public class Order {
 
         public Long amount() {
             return price * quantity / 1000;
+        }
+
+        public void setOrder(Order order) {
+            this.order = order;
         }
     }
 }
