@@ -3,6 +3,7 @@ package pl.edu.wszib.springfirststeps;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.edu.wszib.springfirststeps.order.OrderService;
 
 @Configuration
 public class SpringFirstStepsConfiguration {

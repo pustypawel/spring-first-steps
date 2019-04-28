@@ -1,7 +1,8 @@
-package pl.edu.wszib.springfirststeps;
+package pl.edu.wszib.springfirststeps.order;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 public class OrderConfiguration {
@@ -12,7 +13,7 @@ public class OrderConfiguration {
     }
 
     @Bean
-    OrderRepository orderRepository(SpringDataJpaOrderDao orderDao) {
-        return new SpringDataJpaOrderRepository(orderDao);
+    OrderRepository orderRepository(JdbcTemplate jdbcTemplate) {
+        return new JdbcOrderRepository(jdbcTemplate);
     }
 }

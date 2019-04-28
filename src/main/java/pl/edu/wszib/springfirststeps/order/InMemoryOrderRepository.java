@@ -1,4 +1,4 @@
-package pl.edu.wszib.springfirststeps;
+package pl.edu.wszib.springfirststeps.order;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

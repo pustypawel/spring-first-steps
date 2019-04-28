@@ -1,4 +1,4 @@
-package pl.edu.wszib.springfirststeps;
+package pl.edu.wszib.springfirststeps.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package pl.edu.wszib.springfirststeps;
+package pl.edu.wszib.springfirststeps.order;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +38,11 @@ public class Order {
         this.amount = calculateAmount();
     }
 
+    public Order(long id, long amount) {
+        this.id = id;
+        this.amount = amount;
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,51 +61,11 @@ public class Order {
                 '}';
     }
 
-    @Entity
-    public static class Position {
+    public Long getAmount() {
+        return amount;
+    }
 
-        @OneToOne(optional = false)
-        private Order order;
-
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        @Column(nullable = false)
-        private Long price;
-
-        @Column(nullable = false)
-        private Long quantity;
-
-        @Column(nullable = false)
-        private String name;
-
-        protected Position() {
-            // for hibernate
-        }
-
-        @JsonCreator
-        public Position(@JsonProperty("price") Long price, @JsonProperty("quantity") Long quantity, @JsonProperty("name") String name) {
-            this.price = price;
-            this.quantity = quantity;
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "Position{" +
-                    "price=" + price +
-                    ", quantity=" + quantity +
-                    ", name='" + name + '\'' +
-                    '}';
-        }
-
-        public Long amount() {
-            return price * quantity / 1000;
-        }
-
-        public void setOrder(Order order) {
-            this.order = order;
-        }
+    public void applyPositions(List<Position> positions) {
+        this.positions.addAll(positions);
     }
 }

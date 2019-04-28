@@ -2,6 +2,8 @@ package pl.edu.wszib.springfirststeps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.CommandLineRunner;
+import pl.edu.wszib.springfirststeps.order.Order;
+import pl.edu.wszib.springfirststeps.order.OrderService;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
