@@ -2,9 +2,12 @@ package pl.edu.wszib.springfirststeps.order;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.edu.wszib.springfirststeps.order.dto.OrderDto;
+import pl.edu.wszib.springfirststeps.order.dto.PositionDto;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "ORDER_TABLE")
@@ -67,5 +70,16 @@ public class Order {
 
     public void applyPositions(List<Position> positions) {
         this.positions.addAll(positions);
+    }
+
+    public Set<Position> getPositions() {
+        return positions;
+    }
+
+    public OrderDto dto() {
+        List<PositionDto> positionDtos = positions.stream()
+                .map(position -> position.dto())
+                .collect(Collectors.toList());
+        return new OrderDto(id, amount, positionDtos);
     }
 }

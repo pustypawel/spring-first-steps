@@ -4,5 +4,9 @@
 		"price": 1000,
 		"quantity": 1000,
 		"name": "Testowy produkt"
+	}, {
+		"price": 1000,
+		"quantity": 1000,
+		"name": "Testowy produkt"
 	}]
 }

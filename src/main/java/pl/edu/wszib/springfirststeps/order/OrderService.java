@@ -1,5 +1,10 @@
 package pl.edu.wszib.springfirststeps.order;
 
+import pl.edu.wszib.springfirststeps.order.dto.OrderDto;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 // TODO Transakcja
 public class OrderService {
 
@@ -15,5 +20,11 @@ public class OrderService {
 
     public Order findById(Long orderId) {
         return orderRepository.findById(orderId);
+    }
+
+    public List<OrderDto> findAll() {
+        return orderRepository.findAll().stream()
+                .map(order -> order.dto())
+                .collect(Collectors.toList());
     }
 }

@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public class JdbcOrderRepository implements OrderRepository {
 
@@ -46,8 +47,25 @@ public class JdbcOrderRepository implements OrderRepository {
         if (key == null) {
             throw new IllegalStateException("key is null when insert");
         }
-        // TODO IMPL
-        return key.longValue();
+        Long orderId = key.longValue();
+        insertPositions(orderId, order.getPositions());
+        return orderId;
+    }
+
+    private void insertPositions(Long orderId, Set<Position> positions) {
+        positions.forEach(position -> {
+            int rowsAffected = jdbcTemplate.update(connection -> {
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO POSITION (price, quantity, name, order_id) VALUES (?, ?, ?, ?)");
+                preparedStatement.setLong(1, position.getPrice());
+                preparedStatement.setLong(2, position.getQuantity());
+                preparedStatement.setString(3, position.getName());
+                preparedStatement.setLong(4, orderId);
+                return preparedStatement;
+            });
+            if (rowsAffected != 1) {
+                throw new IllegalStateException("rowsAffected should be 1 when insert. actual rowsAffected = " + rowsAffected);
+            }
+        });
     }
 
     private Long update(Order order) {
@@ -74,5 +92,11 @@ public class JdbcOrderRepository implements OrderRepository {
                 orderId);
         order.applyPositions(positions);
         return order;
+    }
+
+    @Override
+    public List<Order> findAll() {
+        // TODO JDBC IMPL
+        return null;
     }
 }

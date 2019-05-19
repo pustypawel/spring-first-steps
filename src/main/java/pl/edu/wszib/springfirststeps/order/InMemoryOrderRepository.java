@@ -1,5 +1,6 @@
 package pl.edu.wszib.springfirststeps.order;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -19,5 +20,11 @@ public class InMemoryOrderRepository implements OrderRepository {
     @Override
     public Order findById(Long orderId) {
         return memory.get(orderId);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        // TODO InMemory IMPL
+        return null;
     }
 }

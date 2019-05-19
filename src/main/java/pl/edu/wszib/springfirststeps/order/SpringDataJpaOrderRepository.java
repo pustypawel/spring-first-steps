@@ -1,5 +1,6 @@
 package pl.edu.wszib.springfirststeps.order;
 
+import java.util.List;
 import java.util.Optional;
 
 public class SpringDataJpaOrderRepository implements OrderRepository {
@@ -20,5 +21,10 @@ public class SpringDataJpaOrderRepository implements OrderRepository {
     public Order findById(Long orderId) {
         Optional<Order> order = orderDao.findById(orderId);
         return order.orElse(null);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return orderDao.findAll();
     }
 }

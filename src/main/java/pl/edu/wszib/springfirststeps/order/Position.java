@@ -2,13 +2,14 @@ package pl.edu.wszib.springfirststeps.order;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.edu.wszib.springfirststeps.order.dto.PositionDto;
 
 import javax.persistence.*;
 
 @Entity
 public class Position {
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Order order;
 
     @Id
@@ -58,5 +59,21 @@ public class Position {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public PositionDto dto() {
+        return new PositionDto(id, price, quantity, name);
     }
 }
