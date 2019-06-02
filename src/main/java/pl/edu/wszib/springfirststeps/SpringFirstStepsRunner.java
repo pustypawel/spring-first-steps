@@ -2,12 +2,16 @@ package pl.edu.wszib.springfirststeps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edu.wszib.springfirststeps.order.Order;
 import pl.edu.wszib.springfirststeps.order.OrderService;
+import pl.edu.wszib.springfirststeps.order.dto.CreateOrderDto;
+import pl.edu.wszib.springfirststeps.order.dto.OrderDto;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
+@Transactional
 public class SpringFirstStepsRunner implements CommandLineRunner {
 
     private final FileJsonReader fileJsonReader;
@@ -25,15 +29,15 @@ public class SpringFirstStepsRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         String json = fileJsonReader.readJson("order.txt");
-        Order order = tryReadValue(json);
+        CreateOrderDto order = tryReadValue(json);
         Long orderId = orderService.create(order);
-        Order loadedOrder = orderService.findById(orderId);
+        OrderDto loadedOrder = this.orderService.findById(orderId);
         System.out.println(loadedOrder);
     }
 
-    private Order tryReadValue(String json) {
+    private CreateOrderDto tryReadValue(String json) {
         try {
-            return objectMapper.readValue(json, Order.class);
+            return objectMapper.readValue(json, CreateOrderDto.class);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

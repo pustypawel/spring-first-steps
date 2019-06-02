@@ -1,7 +1,6 @@
 package pl.edu.wszib.springfirststeps.order;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.edu.wszib.springfirststeps.order.dto.CreateOrderDto;
 import pl.edu.wszib.springfirststeps.order.dto.OrderDto;
 import pl.edu.wszib.springfirststeps.order.dto.PositionDto;
 
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "ORDER_TABLE")
-public class Order {
+class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,16 +26,9 @@ public class Order {
         // for hibernate
     }
 
-    @JsonCreator
-    public Order(@JsonProperty("amount") Long amount, @JsonProperty("positions") Position[] positions) {
-        this.amount = amount;
-        this.positions.addAll(Arrays.asList(positions));
-        this.positions.forEach(position -> position.setOrder(this));
-    }
-
-    public Order(Position ... positions) {
+    public Order(Set<Position> positions) {
         Objects.requireNonNull(positions);
-        this.positions.addAll(Arrays.asList(positions));
+        this.positions.addAll(positions);
         this.positions.forEach(position -> position.setOrder(this));
         this.amount = calculateAmount();
     }
@@ -44,6 +36,14 @@ public class Order {
     public Order(long id, long amount) {
         this.id = id;
         this.amount = amount;
+    }
+
+    public static Order fromCreate(CreateOrderDto createOrderDto) {
+        Set<CreateOrderDto.Position> positionsDto = createOrderDto.getPositions();
+        Set<Position> positions = positionsDto.stream()
+                .map(position -> Position.fromCreate(position))
+                .collect(Collectors.toSet());
+        return new Order(positions);
     }
 
     public Long getId() {

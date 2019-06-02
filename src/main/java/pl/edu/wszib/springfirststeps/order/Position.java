@@ -1,13 +1,12 @@
 package pl.edu.wszib.springfirststeps.order;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.edu.wszib.springfirststeps.order.dto.CreateOrderDto;
 import pl.edu.wszib.springfirststeps.order.dto.PositionDto;
 
 import javax.persistence.*;
 
 @Entity
-public class Position {
+class Position {
 
     @ManyToOne(optional = false)
     private Order order;
@@ -29,19 +28,25 @@ public class Position {
         // for hibernate
     }
 
-    @JsonCreator
-    public Position(@JsonProperty("price") Long price, @JsonProperty("quantity") Long quantity, @JsonProperty("name") String name) {
-        this.price = price;
-        this.quantity = quantity;
-        this.name = name;
-    }
-
     public Position(Order order, long id, long price, long quantity, String name) {
         this.order = order;
         this.id = id;
         this.price = price;
         this.quantity = quantity;
         this.name = name;
+    }
+
+    public Position(Long price, Long quantity, String name) {
+        this.price = price;
+        this.quantity = quantity;
+        this.name = name;
+    }
+
+    public static Position fromCreate(CreateOrderDto.Position position) {
+        Long price = position.getPrice();
+        Long quantity = position.getQuantity();
+        String name = position.getName();
+        return new Position(price, quantity, name);
     }
 
     @Override

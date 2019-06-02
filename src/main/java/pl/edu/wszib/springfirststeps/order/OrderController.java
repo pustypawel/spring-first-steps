@@ -1,10 +1,11 @@
 package pl.edu.wszib.springfirststeps.order;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.wszib.springfirststeps.order.dto.OrderDto;
+import pl.edu.wszib.springfirststeps.order.exception.OrderNotFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,17 +21,21 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDto> getOrders() {
-        return orderService.findAll();
+    public ResponseEntity<List<OrderDto>> getOrders() {
+        return ResponseEntity.status(213)
+                .body(orderService.findAll());
     }
 
     @GetMapping("/{orderId}")
-    public OrderDto getOrder(@PathVariable("orderId") Long orderId) {
-        Order order = orderService.findById(orderId);
-        if (order == null) {
-            return null;
-        } else {
-            return order.dto();
-        }
+    public OrderDto getOrder(@PathVariable("orderId") Long orderId,
+                             @RequestHeader("User-Agent") String userAgent,
+                             @RequestHeader HttpHeaders httpHeaders,
+                             @RequestParam(value = "param", required = false) List<String> param) {
+        System.out.println("User-Agent = " + userAgent);
+        System.out.println("HttpHeaders = " + httpHeaders);
+        System.out.println("param = " + param);
+        return orderService.findById(orderId);
     }
+
+    // TODO: POST
 }
