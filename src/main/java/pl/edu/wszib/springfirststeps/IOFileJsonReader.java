@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-@Component
 public class IOFileJsonReader implements FileJsonReader {
 
     @Override

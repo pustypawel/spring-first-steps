@@ -3,10 +3,13 @@ package pl.edu.wszib.springfirststeps.order.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Collections;
 import java.util.Set;
 
 public class CreateOrderDto {
+
+    @NotEmpty
     private Set<Position> positions;
 
     @JsonCreator
@@ -16,6 +19,13 @@ public class CreateOrderDto {
 
     public Set<Position> getPositions() {
         return Collections.unmodifiableSet(positions);
+    }
+
+    @Override
+    public String toString() {
+        return "CreateOrderDto{" +
+                "positions=" + positions +
+                '}';
     }
 
     public static class Position {
@@ -42,6 +52,15 @@ public class CreateOrderDto {
 
         public String getName() {
             return name;
+        }
+
+        @Override
+        public String toString() {
+            return "Position{" +
+                    "price=" + price +
+                    ", quantity=" + quantity +
+                    ", name='" + name + '\'' +
+                    '}';
         }
     }
 }

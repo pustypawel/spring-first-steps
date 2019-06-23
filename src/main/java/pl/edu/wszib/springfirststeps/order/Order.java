@@ -19,7 +19,10 @@ class Order {
     @Column(nullable = false)
     private Long amount;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "order",
+            orphanRemoval = true)
     private Set<Position> positions = new HashSet<>();
 
     protected Order() {
@@ -82,4 +85,5 @@ class Order {
                 .collect(Collectors.toList());
         return new OrderDto(id, amount, positionDtos);
     }
+
 }

@@ -4,9 +4,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.wszib.springfirststeps.order.dto.CreateOrderDto;
 import pl.edu.wszib.springfirststeps.order.dto.OrderDto;
 import pl.edu.wszib.springfirststeps.order.exception.OrderNotFoundException;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,5 +39,9 @@ public class OrderController {
         return orderService.findById(orderId);
     }
 
-    // TODO: POST
+    @PostMapping
+    public Long create(@Valid @RequestBody CreateOrderDto createOrderDto) {
+        Long id = orderService.create(createOrderDto);
+        return id;
+    }
 }
