@@ -3,7 +3,6 @@ package pl.edu.wszib.springfirststeps;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.wszib.springfirststeps.order.Order;
 import pl.edu.wszib.springfirststeps.order.OrderService;
 import pl.edu.wszib.springfirststeps.order.dto.CreateOrderDto;
 import pl.edu.wszib.springfirststeps.order.dto.OrderDto;

@@ -2,7 +2,6 @@ package pl.edu.wszib.springfirststeps.order.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import pl.edu.wszib.springfirststeps.order.Position;
 
 import java.util.Collections;
 import java.util.Set;
